@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<script src="./blackjack/js/jquery-1.11.3.min.js"></script>
+</head>
+<body><div style="margin: 10%">
+	<button type="button" onclick="begin()" >开始</button>
+	<button type="button" onclick="cot()" >继续摸牌</button>
+	<button type="button" onclick="out()" >翻牌</button>
+	<h1 style="text-align: center; ">玩家</h1>
+	<div>
+	<hr><hr>
+	<h1 style="text-align: center; ">庄家</h1>
+</body>
+	<script type="text/javascript">
+		function begin() {
+			$.post('./blackController/black', {
+				param1: 'value1'
+			}, function(data) {
+				/*optional stuff to do after success */
+				alert(data);
+			});
+
+		}
+		function cot() {
+			$.post('/path/to/file', {
+				param1: 'value1'
+			}, function(data) {
+				/*optional stuff to do after success */
+			});
+		}
+		function out() {
+			$.post('/path/to/file', {
+				param1: 'value1'
+			}, function(data) {
+				/*optional stuff to do after success */
+			});
+		}
+	</script>
+</html>

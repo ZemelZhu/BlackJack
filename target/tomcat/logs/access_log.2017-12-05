@@ -1,0 +1,5 @@
+127.0.0.1 - - [05/Dec/2017:10:04:23 +0800] "GET /rum/chat.html HTTP/1.1" 404 977 http-bio-8080-exec-1 54
+127.0.0.1 - - [05/Dec/2017:10:04:23 +0800] "GET /favicon.ico HTTP/1.1" 404 973 http-bio-8080-exec-2 3
+127.0.0.1 - - [05/Dec/2017:10:04:36 +0800] "GET /black.html HTTP/1.1" 200 1028 http-bio-8080-exec-3 4
+127.0.0.1 - - [05/Dec/2017:10:04:36 +0800] "GET /blackjack/js/jquery-1.11.3.min.js HTTP/1.1" 200 95957 http-bio-8080-exec-4 3
+127.0.0.1 - - [05/Dec/2017:10:04:43 +0800] "POST /blackController/black HTTP/1.1" 200 3 http-bio-8080-exec-5 22
