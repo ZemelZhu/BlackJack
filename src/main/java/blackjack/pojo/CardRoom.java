@@ -9,48 +9,47 @@ public class CardRoom {
 	 * 房间类
 	 * 创建庄家和玩家
 	*/
-//	@Autowired
-//	private Dealer dealer;
-//	@Autowired
-//	private Player player;
+	@Autowired
+	private Dealer dealer;
+	@Autowired
+	private Player player;
 //	@Autowired
 //	private Card cards;
-//	public void gameStart() {
-//		int card = 1;
-//		cards.shakeout();
-//	}
 //	
-//	public String playerAddCard() {
-//		/**
-//		 * 玩家获得一张牌
-//		 */
-//		String nextCard = cards.getNextCard();
-//		player.addCard(nextCard, cards.cardToPoint(nextCard));
-//		return nextCard;
-//	}
-//	public String dealerAddCard() {
-//		/**
-//		 * 庄家获得一张牌
-//		 */
-//		String nextCard = cards.getNextCard();
-//		dealer.addCard(nextCard, cards.cardToPoint(nextCard));
-//		return nextCard;
-//	}
+//	
 //	public void ganme() {
 //		playerAddCard();
 //		playerAddCard();
 //		dealerAddCard();
 //		dealerAddCard();
 //	}
-//	public static void main(String[] args) {
-//		CardRoom cardRoom = new CardRoom();
-//		cardRoom.gameStart();
-//		System.out.println("是否继续");
+//	
+//
+//	public int work() {
+//		// TODO Auto-generated method stub
+//		int playerAddCard = playerAddCard();
+//		System.out.println(player.getPoint());
+//		if(player.getPoint()>21) {
+//			return 0;
+//		}
+//		return playerAddCard;
+//	}
+//	public int work2() {
+//		// TODO Auto-generated method stub
+//		int playerAddCard = dealerAddCard();
 //		
+//		return playerAddCard;
 //	}
 //
-//	public void work() {
+//	public String work3() {
 //		// TODO Auto-generated method stub
-//		
+//		String dealerAddCard ="";
+//		while(dealer.getPoint()<=21) {
+//			if(dealer.getPoint()>=17) break;
+//			dealerAddCard= dealerAddCard+dealerAddCard();
+//			
+//		}
+//		if(dealer.getPoint()>21) return "0";
+//		return dealerAddCard;
 //	}
 }

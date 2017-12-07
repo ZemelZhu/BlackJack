@@ -4,38 +4,59 @@
 	<title></title>
 	<meta charset="utf-8">
 	<script src="./blackjack/js/jquery-1.11.3.min.js"></script>
+	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
 </head>
 <body><div style="margin: 10%">
 	<button type="button" onclick="begin()" >开始</button>
 	<button type="button" onclick="cot()" >继续摸牌</button>
 	<button type="button" onclick="out()" >翻牌</button>
 	<h1 style="text-align: center; ">玩家</h1>
+	<div id="playcard"></div>
 	<div>
 	<hr><hr>
 	<h1 style="text-align: center; ">庄家</h1>
+	<div id="dealercard">12</div>
 </body>
 	<script type="text/javascript">
 		function begin() {
-			$.post('./blackController/black', {
-				param1: 'value1'
+			$.post('./blackController/restart', {
 			}, function(data) {
 				/*optional stuff to do after success */
-				alert(data);
+				// alert(data);
+				$("#playcard").html("");
+				$("#playcard").append(data);
+			});
+			$.post('./blackController/del', {
+			}, function(data) {
+				// alert(data);
+				$("#dealercard").html("");
+				$("#dealercard").append(data);
 			});
 
-		}
+		 }
 		function cot() {
-			$.post('/path/to/file', {
-				param1: 'value1'
+			$.post('./blackController/black', {
 			}, function(data) {
 				/*optional stuff to do after success */
+				$("#playcard").append(data);
+				if(data=="0"){
+					alert("点数爆了，你输了");
+					return ;
+				}
+				
 			});
 		}
 		function out() {
-			$.post('/path/to/file', {
-				param1: 'value1'
+			$.post('./blackController/out', {
+				
 			}, function(data) {
+				$("#dealercard").append(data);
+				if(data=="0"){
+					alert("点数爆了，你输了");
+					return ;
+				}
 				/*optional stuff to do after success */
+
 			});
 		}
 	</script>

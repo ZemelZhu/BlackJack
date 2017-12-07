@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<script type="text/javascript" src="./jquery-1.4.4.min.js"></script>
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+<title>Home</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+
+        $(function(){
+            // function jiexi(var a) {
+            //     var b=parseInt(a);
+            //     b= (b+1)%13;
+            //     if(b==0||b==11||b==12) b=10;
+            //     return b+"";
+            // }
+
+
+            var websocket;
+            var player,dealer;
+                websocket = new WebSocket("ws://127.0.0.1:8080/echo");
+            websocket.onopen = function (evnt) {
+                // $("#tou").html("链接服务器成功!")
+                $("#one").append(evnt.data);
+                // websocket.send("##");
+            };
+            websocket.onmessage = function (evnt) {
+                // $("#msg").html($("#msg").html() + "<br/>" + evnt.data);
+                // $("#playcard").append(evnt.data);
+                alert(evnt.data);
+                var data = evnt.data;
+                var status=parseInt(data[0]);
+                var cot=data.slice(1);
+                // cot = jiexi(cot);
+                if(status==1) {
+                    // 庄家获得一张暗牌
+                    alert("你是庄家");
+                    $("#tt1").hide();
+                    $("#dealercard").append(cot+"^^^");
+                     $("#playcard").append("?");
+                }
+                else if(status==2) {
+                    // 玩家获得一张暗牌
+                    alert("你是玩家");
+                    $("#playcard").append(cot+"^^^");
+                    $("#dealercard").append("?");
+                }
+                else if(status==3) {
+                    // 玩家获得一张牌
+                    $("#playcard").append(cot+"^^^");
+                }
+                else if(status==4) {
+                    // 庄家获得一张牌
+                    $("#dealercard").append(cot+"^^^");
+                }
+                else if(status==5) {
+                    // 双方通知，判断输赢
+                    alert(cot);
+                }
+                else if(status==6) {
+
+                }
+                var cot=bb.slice(1);
+                if(data=="player") {
+
+                }
+
+
+            };
+            websocket.onerror = function (evnt) {
+                alert("发生错误");
+            };
+            websocket.onclose = function (evnt) {
+                alert("发生错误");
+                // $("#tou").html("与服务器断开了链接!")
+            }
+             $("#cot").bind("click", function() {
+                	websocket.send("1");
+            });
+             $("#out").bind("click", function() {
+                    websocket.send("2");
+            });
+        });
+
+    </script>
+</head>
+<body><div style="margin: 10%">
+
+    <div id="tt1">
+    <button type="button" id="cot" >继续摸牌</button>
+    <button type="button" id="out" >翻牌</button>
+    </div>
+    <h1 style="text-align: center; ">玩家</h1>
+    <div id="playcard"></div>
+    <div>
+    <hr><hr>
+    <h1 style="text-align: center; ">庄家</h1>
+    <div id="dealercard"></div>
+</body>
+<script type="text/javascript">
+  
+        function cot() {
+          
+        }
+        function out() {
+           
+        }
+</script>
+</html>
