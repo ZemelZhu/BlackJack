@@ -44,6 +44,30 @@ public class Game {
 			
 		}
 	}
-
+	public int gameStatus() {
+		// TODO Auto-generated method stub
+		System.out.println(player.getPoint()+"<==>"+dealer.getPoint());
+		return player.getPoint()-dealer.getPoint();
+	}
+	public boolean playerStatus() {
+		if(player.getPoint()>21) return false;
+		return true;
+	}
+	public boolean dealerMaxStatus() {
+		if(dealer.getPoint()>21) return false;
+		return true;
+	}
+	public boolean dealerMinStatus() {
+		// TODO Auto-generated method stub
+		if(dealer.getPoint()<17)
+			return true;
+		return false;
+	}
+	public int getPlayerHideCard() {
+		return player.getHideCard();
+	}
+	public int getDealerHideCard() {
+		return dealer.getHideCard();
+	}
 	
 }

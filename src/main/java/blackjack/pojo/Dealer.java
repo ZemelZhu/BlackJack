@@ -28,6 +28,7 @@ public class Dealer {
 	public void init() {
 		point = 0;
 		cardNumber = 0;
+		cardShape.clear();
 	}
 
 	public int getPoint() {
@@ -53,5 +54,7 @@ public class Dealer {
 	public void setCardShape(ArrayList<Integer> cardShape) {
 		this.cardShape = cardShape;
 	}
-
+	public int getHideCard() {
+		return cardShape.get(0);
+	}
 }

@@ -15,6 +15,7 @@ public class Player {
 	public void init() {
 		point = 0;
 		cardNumber = 0;
+		cardShape.clear();
 	}
 
 	public int getPoint() {
@@ -38,5 +39,7 @@ public class Player {
 		cardNumber++;
 		cardShape.add(card);
 	}
-
+	public int getHideCard() {
+		return cardShape.get(0);
+	}
 }
