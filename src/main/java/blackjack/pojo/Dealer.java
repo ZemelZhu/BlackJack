@@ -17,10 +17,13 @@ public class Dealer {
 	 */
 	private int point = 0;
 	private int cardNumber = 0;
+	private int blackCard;
 	private ArrayList<Integer> cardShape = new ArrayList<Integer>();
 
 	public void addCard(int card) {
-		point += CardTemplate.pointToNumber(card);
+		int pointToNumber = CardTemplate.pointToNumber(card);
+		if(pointToNumber==1) blackCard=10;
+		point += pointToNumber;
 		cardNumber++;
 		cardShape.add(card);
 	}
@@ -28,10 +31,13 @@ public class Dealer {
 	public void init() {
 		point = 0;
 		cardNumber = 0;
+		blackCard=0;
 		cardShape.clear();
 	}
 
 	public int getPoint() {
+		if(point+blackCard<=21)
+			return point+blackCard;
 		return point;
 	}
 

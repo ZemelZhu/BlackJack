@@ -69,5 +69,7 @@ public class Game {
 	public int getDealerHideCard() {
 		return dealer.getHideCard();
 	}
-	
+	public int getDealerPoint() {
+		return dealer.getPoint();
+	}
 }

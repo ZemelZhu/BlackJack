@@ -8,6 +8,7 @@ import org.springframework.web.socket.*;
 
 import blackjack.core.GameRoom;
 import blackjack.handler.GameHandler;
+import blackjack.rooms.RoomHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,52 +22,43 @@ import javax.servlet.http.HttpSession;
 @Component
 public class WebSocketHander implements WebSocketHandler {
 	@Autowired
-	private GameHandler gameHandler;
-	@Autowired
-	GameRoom gameRoom;
+	private RoomHandler roomHandler; 
+	private int onLineSession=0;
 	private static final Logger logger = Logger.getLogger(WebSocketHander.class);
-	private  HashMap<WebSocketSession, GameRoom> sessionIndexRoom = new HashMap<WebSocketSession, GameRoom>();
-	private  ArrayList<WebSocketSession> waitingSession = new ArrayList<WebSocketSession>();
-//	游戏大厅
-	// private HashSet<WebSocketSession> set= new HashSet<WebSocketSession>();
+	private  ArrayList<WebSocketSession> allSession = new ArrayList<WebSocketSession>();
 	// 初次链接成功执行
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		logger.debug("链接成功......");
 		System.out.println(session+"begin***");
-		matching(session);
+		onLineSession++;
+		allSession.add(session);
+		sendMessageToAllSession(new TextMessage("0"+allSession.size()));
+		
 	
+	}
+
+	private void sendMessageToAllSession(TextMessage message) throws IOException {
+	// TODO Auto-generated method stub
+		System.out.println(onLineSession+"@#@");
+		for (WebSocketSession session : allSession) {
+			session.sendMessage(message);
+		}
 	}
 
 	// 接受消息处理消息
 
 	public void handleMessage(WebSocketSession webSocketSession, 
 			WebSocketMessage<?> webSocketMessage)throws Exception {
-		GameRoom room = sessionIndexRoom.get(webSocketSession);
-		if(room==null) return ;
-		room.receive(webSocketSession,webSocketMessage.getPayload()+"");
+		
+		roomHandler.receiveMessage(webSocketSession,webSocketMessage.getPayload()+"");
 	}
 
 	public void matching(WebSocketSession session) throws IOException, InterruptedException {
-		if(waitingSession.size()>0) {
-//			获得等待的session
-			WebSocketSession waitedSession = waitingSession.get(0);
-			gameRoom.setameRoom(waitedSession,session);
-//			记录session进入的房间号
-			sessionIndexRoom.put(waitedSession, gameRoom);
-			sessionIndexRoom.put(session, gameRoom);
-//			房间2人了，房间号+1
-//			等待的session为0了
-//			gameRoom.beginGame();
-			waitingSession.remove(0);
-			
-		}
-		else {
-			waitingSession.add(session);
-		}
-		for (WebSocketSession webSocketSession : waitingSession) {
-			System.out.println(webSocketSession+"@@@");
-		}
+		
 	
+	}
+	public void creatRoom(WebSocketSession session) throws IOException, InterruptedException {
+		roomHandler.creatRoom(session);
 	}
 
 	
@@ -80,20 +72,11 @@ public class WebSocketHander implements WebSocketHandler {
 
 	private void error(WebSocketSession session) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
-		GameRoom room = sessionIndexRoom.get(session);
-		System.out.println("错误session==>"+room);
-		if(room==null) {
-//			matching(session);
-			return ;
-		}
-		else {
-			WebSocketSession livingSession = room.getLivingSession(session);
-			System.out.println("错误session=1=>"+livingSession);
-			livingSession.sendMessage(new TextMessage("8"));
-			matching(livingSession);
-			sessionIndexRoom.remove(livingSession);
-			sessionIndexRoom.remove(session);
-		}
+		onLineSession--;
+		allSession.remove(session);
+		sendMessageToAllSession(new TextMessage("0"+allSession.size()));
+		roomHandler.error(session);
+		
 	}
 
 	public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {

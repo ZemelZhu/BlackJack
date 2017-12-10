@@ -19,22 +19,33 @@ import blackjack.socket.WebSocketHander;
 public class GameRoom {
 	@Autowired
 	private Game game;
+	private String gameNumber;//房间号
+	private int roomOnline=0;
 	private WebSocketSession playerSession;
 	private WebSocketSession dealerSession;
-	private WebSocketHander webSocketHander=new WebSocketHander();
-	private ArrayList<HttpSession> sessions = new ArrayList<HttpSession>();
 	private int waitSessionNumber=0;
+	public void setGameNumber(String number, WebSocketSession session) throws IOException, InterruptedException {
+		this.gameNumber=number;
+		this.roomOnline=1;
+		dealerSession=session;
+		playerToDealer("a"+gameNumber);
+	}
+	public void joinRoom(WebSocketSession session) throws IOException, InterruptedException {
+		roomOnline++;
+		playerSession=session;
+		broadCast("b房间人数2人，可以开始游戏");
+	}
 	
+	public int getRoomOnline() {
+		return roomOnline;
+	}
 	public void setameRoom(WebSocketSession playerSession, WebSocketSession dealerSession) {
 		// TODO Auto-generated constructor stub
 		this.playerSession=playerSession;
 		this.dealerSession=dealerSession;
 	}
 	
-	public void playerAction() {
-		int card = game.playerAddCard();
-		game.Status();
-	}
+	
 	
 	public void broadCast(String string) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
@@ -45,6 +56,9 @@ public class GameRoom {
 	public void beginGame() throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
 //		broadCast("5游戏开始");
+		WebSocketSession flat=playerSession;
+		playerSession=dealerSession;
+		dealerSession=flat;
 		game.init();
 		int playerAddCard = game.playerAddCard();
 		dealerToPlayer("2"+playerAddCard);
@@ -53,7 +67,7 @@ public class GameRoom {
 		playerAddCard = game.playerAddCard();
 		Thread.sleep(1000);
 		broadCast("3"+playerAddCard);
-		Thread.sleep(1000);
+		Thread.sleep(500);
 		dealerAddCard = game.dealerAddCard();
 		broadCast("4"+dealerAddCard);
 		
@@ -81,6 +95,11 @@ public class GameRoom {
 			beginGame();
 		}
 		else if (request.equals("3")) {
+			System.out.println("####");
+			System.out.println(playerSession);
+			System.out.println(dealerSession);
+			System.out.println(session);
+			System.out.println(waitSessionNumber);
 			if(session!=playerSession)
 				dealerToPlayer("6");
 			else {
@@ -114,8 +133,14 @@ public class GameRoom {
 			/**
 			 * 庄家摸牌			
 			 */
+			if(game.getDealerPoint()<17) {
+				playerToDealer("c");
+				return ;
+			}
+				
 			playerFlopCard();
-	}
+		}
+		
 	}
 
 	private void dealerGetCard() throws IOException, InterruptedException {
@@ -156,8 +181,6 @@ public class GameRoom {
 		
 		playerToDealer("51"+game.getPlayerHideCard());
 		dealerToPlayer("50"+game.getDealerHideCard());
-//		broadCast("6游戏结束重新开始");
-//		beginGame();
 	}
 
 	private void gameStatus() {
@@ -170,5 +193,14 @@ public class GameRoom {
 		if(playerSession!=session) return playerSession;
 		return dealerSession;
 		
+	}
+	public void removeSession(WebSocketSession session) throws IOException, InterruptedException {
+		// TODO Auto-generated method stub
+		roomOnline--;
+		waitSessionNumber=0;
+		if(session==dealerSession)
+			dealerSession=playerSession;
+		playerSession=null;
+		playerToDealer("b对方已经退出房间");
 	}
 }
