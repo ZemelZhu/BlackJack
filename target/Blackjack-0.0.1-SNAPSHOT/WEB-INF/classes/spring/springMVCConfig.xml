@@ -8,16 +8,6 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	<!-- 注解驱动 -->
 	<mvc:annotation-driven />
-	
-	<!-- 定义Controller的扫描包 -->
-	<context:component-scan base-package="blackjack/**" />
-
-	<!-- 定义视图解析器 -->
-	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="" />
-		<property name="suffix" value=".html" />
-	</bean>
 	<!-- 处理静态资源被“/”所拦截的问题 -->
 	<mvc:default-servlet-handler />
 

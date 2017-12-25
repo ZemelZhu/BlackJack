@@ -10,7 +10,7 @@
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<!-- 自动注入mms中的bean -->
+	<!-- 自动注入blackjack中的bean -->
 	<context:component-scan base-package="blackjack" />
 	
 </beans>

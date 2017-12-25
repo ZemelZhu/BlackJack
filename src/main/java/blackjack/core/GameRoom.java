@@ -1,206 +1,186 @@
 package blackjack.core;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import blackjack.pojo.Player;
-import blackjack.socket.WebSocketHander;
-@Scope("prototype")  
-@Component
 public class GameRoom {
-	@Autowired
-	private Game game;
-	private String gameNumber;//房间号
-	private int roomOnline=0;
+	private Game game= new Game();
+	private String gameNumber;// 房间号
+	private int roomOnline = 0;
 	private WebSocketSession playerSession;
 	private WebSocketSession dealerSession;
-	private int waitSessionNumber=0;
+	private int waitSessionNumber = 0;
+
 	public void setGameNumber(String number, WebSocketSession session) throws IOException, InterruptedException {
-		this.gameNumber=number;
-		this.roomOnline=1;
-		dealerSession=session;
-		playerToDealer("a"+gameNumber);
+		this.gameNumber = number;
+		this.roomOnline = 1;
+		dealerSession = session;
+		playerToDealer("a" + gameNumber);
 	}
+
 	public void joinRoom(WebSocketSession session) throws IOException, InterruptedException {
+		// 第二个人加入房间，可以开始游戏
 		roomOnline++;
-		playerSession=session;
-		broadCast("b房间人数2人，可以开始游戏");
+		playerSession = session;
+		broadCast("p房间人数2人，可以开始游戏");
 	}
-	
-	public int getRoomOnline() {
+
+	public int getRoomOnline() {// 返回房间人数
 		return roomOnline;
 	}
-	public void setameRoom(WebSocketSession playerSession, WebSocketSession dealerSession) {
-		// TODO Auto-generated constructor stub
-		this.playerSession=playerSession;
-		this.dealerSession=dealerSession;
-	}
-	
-	
-	
-	public void broadCast(String string) throws IOException, InterruptedException {
+
+	private void broadCast(String message) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
+		// 房间消息广播
 		Thread.sleep(100);
-		playerSession.sendMessage(new TextMessage(string));
-		dealerSession.sendMessage(new TextMessage(string));
+		playerSession.sendMessage(new TextMessage(message));
+		dealerSession.sendMessage(new TextMessage(message));
 	}
-	public void beginGame() throws IOException, InterruptedException {
+
+	private void beginGame() throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
-//		broadCast("5游戏开始");
-		WebSocketSession flat=playerSession;
-		playerSession=dealerSession;
-		dealerSession=flat;
-		game.init();
+		// 游戏开始，先轮换身份
+		WebSocketSession flat = playerSession;
+		playerSession = dealerSession;
+		dealerSession = flat;
+		game.init();// 游戏初始化
 		int playerAddCard = game.playerAddCard();
-		dealerToPlayer("2"+playerAddCard);
+		dealerToPlayer("g2" + playerAddCard);// 发送一张暗牌给玩家
 		int dealerAddCard = game.dealerAddCard();
-		playerToDealer("1"+dealerAddCard);
+		playerToDealer("g1" + dealerAddCard);// 发送一张暗牌给庄家
 		playerAddCard = game.playerAddCard();
 		Thread.sleep(1000);
-		broadCast("3"+playerAddCard);
+		broadCast("g3" + playerAddCard);// 玩家获得一张牌
 		Thread.sleep(500);
 		dealerAddCard = game.dealerAddCard();
-		broadCast("4"+dealerAddCard);
-		
+		broadCast("g4" + dealerAddCard);// 庄家获得一张牌
+
 	}
-	public void playerToDealer(String message) throws IOException, InterruptedException {
+
+	private void playerToDealer(String message) throws IOException, InterruptedException {
+		// 发送消息给庄家
 		Thread.sleep(100);
 		dealerSession.sendMessage(new TextMessage(message));
 	}
-	public void dealerToPlayer(String message) throws IOException, InterruptedException {
+
+	private void dealerToPlayer(String message) throws IOException, InterruptedException {
+		// 发送信息给玩家
 		Thread.sleep(100);
 		playerSession.sendMessage(new TextMessage(message));
 	}
 
 	public void receive(WebSocketSession session, String request) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
-		if(request.equals("0")) {
+		if (request.equals("0")) {//玩家请求获得一张牌
 			playerGetCard();
-			
-		}
-		else if (request.equals("1")) {
-//			playerFlopCard();
-			playerToDealer("9");
-		}
-		else if (request.equals("2")) {
+		} else if (request.equals("1")) {
+			// playerFlopCard();
+			playerToDealer("p庄家回合");//玩家处于结束状态，等待庄家操作
+		} else if (request.equals("2")) {//游戏开始
 			beginGame();
-		}
-		else if (request.equals("3")) {
-			System.out.println("####");
-			System.out.println(playerSession);
-			System.out.println(dealerSession);
-			System.out.println(session);
-			System.out.println(waitSessionNumber);
-			if(session!=playerSession)
-				dealerToPlayer("6");
+		} else if (request.equals("3")) {//进行准备
+			if (session != playerSession)
+				dealerToPlayer("z6");//告诉对方已经准备好
 			else {
-				playerToDealer("6");
+				playerToDealer("z6");
 			}
-			if(waitSessionNumber>0) {
-				waitSessionNumber=0;
+			if (waitSessionNumber > 0) {
+				waitSessionNumber = 0;
 				beginGame();
-			}
-			else {
+			} else {
 				waitSessionNumber++;
 			}
-		}
-		else if (request.equals("4")) {
-			if(session!=playerSession)
-				dealerToPlayer("7");
+		} else if (request.equals("4")) {//取消准备
+			if (session != playerSession)
+				dealerToPlayer("z7");
 			else {
-				playerToDealer("7");
+				playerToDealer("z7");
 			}
-			if(waitSessionNumber>0) {
+			if (waitSessionNumber > 0) {
 				waitSessionNumber--;
 			}
-		}
-		else if(request.equals("5")) {
-				/**
-				 * 庄家摸牌			
-				 */
-			dealerGetCard();
-		}
-		else if(request.equals("6")) {
+		} else if (request.equals("5")) {
 			/**
-			 * 庄家摸牌			
+			 * 庄家摸牌
 			 */
-			if(game.getDealerPoint()<17) {
-				playerToDealer("c");
-				return ;
+			dealerGetCard();
+		} else if (request.equals("6")) {
+			/**
+			 * 庄家摸牌
+			 */
+			if (game.getDealerPoint() < 17) {
+				playerToDealer("p点数小于17点,必须摸牌");//点数小于17点，不能翻牌
+				return;
 			}
-				
+
 			playerFlopCard();
 		}
-		
+
 	}
 
 	private void dealerGetCard() throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
 		int dealerAddCard = game.dealerAddCard();
-		broadCast("4"+dealerAddCard);
-		if(!game.dealerMaxStatus()) {
-			playerToDealer("50"+game.getPlayerHideCard());
-			dealerToPlayer("51"+game.getDealerHideCard());
+		broadCast("g4" + dealerAddCard);// 广播庄家摸牌
+		if (!game.dealerMaxStatus()) {// 如果大于21点，直接表示庄家输
+			playerToDealer("g50" + game.getPlayerHideCard());
+			dealerToPlayer("g51" + game.getDealerHideCard());
 		}
 	}
 
 	private void playerFlopCard() throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
-		int status =game.gameStatus();
-		if(status>0) {
-			playerToDealer("50"+game.getPlayerHideCard());
-			dealerToPlayer("51"+game.getDealerHideCard());
-		}
-		else if(status<0)
-		{
-			playerToDealer("51"+game.getPlayerHideCard());
-			dealerToPlayer("50"+game.getDealerHideCard());
-		}
-		else {
-			playerToDealer("52"+game.getPlayerHideCard());
-			dealerToPlayer("52"+game.getDealerHideCard());
+		/**
+		 * 游戏结束判定 g表示游戏中的判定  5表示为游戏结果输出   0表示输   1表示赢
+		 */
+		int status = game.gameStatus();// 获得双方点数的差值
+		if (status > 0) {
+			playerToDealer("g50" + game.getPlayerHideCard());
+			dealerToPlayer("g51" + game.getDealerHideCard());
+		} else if (status < 0) {
+			playerToDealer("g51" + game.getPlayerHideCard());
+			dealerToPlayer("g50" + game.getDealerHideCard());
+		} else {
+			playerToDealer("g52" + game.getPlayerHideCard());
+			dealerToPlayer("g52" + game.getDealerHideCard());
 		}
 	}
 
 	private void playerGetCard() throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
+		//玩家获得一张牌
 		int playerAddCard = game.playerAddCard();
-		broadCast("3"+playerAddCard);
-		if(game.playerStatus()) {
-			return ;
+		broadCast("g3" + playerAddCard);
+		if (game.playerStatus()) {//判断是否大于21点
+			return;
 		}
-		
-		playerToDealer("51"+game.getPlayerHideCard());
-		dealerToPlayer("50"+game.getDealerHideCard());
-	}
-
-	private void gameStatus() {
-		// TODO Auto-generated method stub
-//		if(Player.)
+		//已经大于21点，直接表示该玩家为输
+		playerToDealer("g51" + game.getPlayerHideCard());
+		dealerToPlayer("g50" + game.getDealerHideCard());
 	}
 
 	public WebSocketSession getLivingSession(WebSocketSession session) {
 		// TODO Auto-generated method stub
-		if(playerSession!=session) return playerSession;
+		//获得还在房间的session
+		if (playerSession != session)
+			return playerSession;
 		return dealerSession;
-		
+
 	}
+
 	public void removeSession(WebSocketSession session) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
+		//移除异常的session
 		roomOnline--;
-		waitSessionNumber=0;
-		if(session==dealerSession)
-			dealerSession=playerSession;
-		playerSession=null;
-		playerToDealer("b对方已经退出房间");
+		waitSessionNumber = 0;
+		if (session == dealerSession)
+			dealerSession = playerSession;
+		playerSession = null;
+		playerToDealer("b对方已经退出房间");//中途异常退出模块
 	}
 }

@@ -2,20 +2,14 @@ package blackjack.pojo;
 
 import java.util.ArrayList;
 
+
 import java.util.Random;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-@Component
 public class Poker {
-	/**
-	 *扑克牌类 
-	 *方块♦diamond
-	 *梅花♣club
-	 *红心♥heart
-	 *黑桃♠spade
-	 */
-	private int cardNumber;
+
+	private int cardNumber;//牌的数量
 	private ArrayList<Integer> cards = new ArrayList<Integer>();
 
 	public Poker() {
@@ -37,14 +31,12 @@ public class Poker {
 			setTemplate.remove(randomNumber);
 			cards.add(random);
 		}
-
 	}
 
 	public int getNextCard() {
+		// 获得下一张牌
 		cardNumber--;
-		System.out.println(cards.size() + "***");
 		return cards.get(cardNumber);
-
 	}
 
 }

@@ -2,508 +2,152 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="utf-8">
-	<meta name="renderer" content="webkit">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>BlackJack</title>
-	<link href="./css/bootstrap.min.css" rel="stylesheet">
-	<link rel="shortcut icon" type="image/x-icon" href="./image/vim_shortcut.ico">
-	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
-	<script src="./js/jquery-1.11.3.min.js"></script>
-	<script src="./js/bootstrap.min.js"></script>
-<style type="text/css">
-	
-	.aa{
-	/*	margin-bottom: 8%;
-		margin-top: 4%;*/
-		/*margin: 5%;*/
-		/*margin-left: 6%;
-		margin-right: 6%;*/
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>BlackJack</title>
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" type="image/x-icon"
+	href="./image/vim_shortcut.ico">
+<link rel="stylesheet" type="text/css" href="./css/mycss.css">
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+<script src="./js/jquery-1.11.3.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/myjs.js"></script>
 
-	}
-	.aaa{
-		width: 17%;
-		/*text-align: center;*/
-		/*display: block;*/
-		  margin-left: auto;
-		  margin-right: auto;
-	}
-	#gg{
-		/*background-color: #fff;*/
-		/*box-shadow: 2px 2px 3px #ccc;*/
-		font-size: 2vmin;
-	}
-
-	.bb{
-		/* background-image: url("./image/3.png");
-		 background-size:cover; 
-         background-attachment: fixed;
-       	position:fixed;
-         height: 800px;*/
-         /*height: 400px;*/
-
-         background-color: rgba(46,139,87,1);
-	}
-	#ggg{
-		background-color: #666;
-	}
-	.gggg{
-		background-color: #fff;
-		height: 0%;
-	}
-	.Input{
-		/*padding-left: 20%;
-		padding-right: 20%;*/
-		margin-bottom:5%;
-	}
-	.ccc{
-		background-color: #666;
-	border-top: 1px solid #ccc;
-	/*padding-top: 20px;*/
-	/*text-align: center;*/
-	color: #eee;
-	}
-	#footer {
-	background-color: #666;
-	border-top: 1px solid #ccc;
-	padding: 0px;
-	text-align: center;
-	color: #eee;
-}
-	body{
-		font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei UI", "Microsoft YaHei", SimHei, "\5B8B\4F53", simsun, sans-serif;
-		/*font-size: 40px;*/
-		/* background-image: url("./image/3.jpg");
-            background-size:cover; 
-            background-attachment: fixed;
-            position:fixed;*/
-             /*background-attachment: fixed;*/
-             /*position:fixed;*/
-             background-color:#666;
-	}
-	
-</style>
 </head>
 
-<body >
+<body>
+	<!-- 导航头 -->
 	<nav class="navbar navbar-inverse navbar-fixed-top ">
-  <div class="container ">
-   	<div class="navbar-header">
-
-        <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-th-large"></span >BlackJack</a>
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-
-			</button>
-
-    </div>
-
-      	<div class="collapse navbar-collapse" id="navbar-collapse">
-      		<ul class="nav navbar-nav navbar-right">
-      			<li >
-			    <p class="navbar-text"> <span class="glyphicon glyphicon-home"></span > 房间号：<span id="roomId">未进入房间</span></p>
-			  </li>
-				<li >
-			   
-			    <p class="navbar-text"> <span class="glyphicon glyphicon-user"></span > 在线人数：<span id="online"></span> </p>
-			  </li>
-			  
-			</ul>	
-      		<form class="navbar-form navbar-left">
-        <div class="form-group ">
-          <input type="text" class="form-control " placeholder="请输入房间号" id="roomNumber">
-
-        </div>
-        <button type="button" class="btn btn-warning " id="joinRoom">加入房间</button>
-        <button type="button" class="btn btn-danger "  id="createRoom">创建房间</button>
-      </form>
+		<div class="container ">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="https://github.com/Vimmone/BlackJack">
+					<span class="glyphicon glyphicon-th-large"></span> BlackJack
+				</a>
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<p class="navbar-text">
+							<span class="glyphicon glyphicon-home"></span> 房间号： <span
+								id="roomId">未进入房间</span>
+						</p>
+					</li>
+					<li>
+						<p class="navbar-text">
+							<span class="glyphicon glyphicon-user"></span> 在线人数： <span
+								id="online"></span>
+						</p>
+					</li>
+				</ul>
+				<form class="navbar-form navbar-left">
+					<div class="form-group ">
+						<input type="text" class="form-control " placeholder="请输入房间号"
+							id="roomNumber">
+					</div>
+					<button type="button" class="btn btn-warning " id="joinRoom">加入房间</button>
+					<button type="button" class="btn btn-danger " id="createRoom">创建房间</button>
+				</form>
+			</div>
 		</div>
-
-  </div>
-</nav>
-
-
-<br>
-<br>
-<br>
-<div class="container aa">
+	</nav>
+	<br>
+	<br>
+	<br>
+	<!-- 主体显示 -->
+	<div class="container aa">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="jumbotron bb">
-					 <div class="form-group">
-					 		<div class="container-fluid">
-					 			<div class="row">
-					 				<span class="col-lg-1 col-sm-1 col-xs-1 col-md-1"></span><div id="you">
-							 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
-							 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
-							 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
-							 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
-							 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2"></div>
-						 		</div>
-						 	</div><br>
-						 	<a href="#" class="btn  btn-default disabled btn-sm aaa btn-block" role="button" id="idone">未准备</a>
-						<h3><div class="alert alert-info center-block" role="alert" id="output" style="text-align: center;">欢迎...</div></h3>
-						<a href="#" class="btn btn-default btn-sm  aaa btn-block" role="button" id="idtwo">未准备</a><br>
-							
-									
-						<!-- <div class="form-group"> -->
-							<!-- <div class="col-sm-2"></div>
- -->							
- 									<div class="container-fluid">
-							 			<div class="row">
-							 				<span class="col-lg-1 col-sm-1 col-xs-1 col-md-1"></span><div id="myself">
-									 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
-									 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
-									 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
-									 		<img src="./image/poker/54.jpg" class="img-rounded ccol-lg-2 col-sm-2 col-xs-2 col-md-2">
-									 		<img src="./image/poker/54.jpg" class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2"></div>
-								 		</div>
-						 			</div>
- 								
-						
-								 	
+					<div class="form-group">
+						<div class="container-fluid">
+							<div class="row">
+								<span class="col-lg-1 col-sm-1 col-xs-1 col-md-1"></span>
+								<div id="you">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+								</div>
+							</div>
 						</div>
+						<br> <a href="#"
+							class="btn  btn-default disabled btn-sm aaa btn-block"
+							role="button" id="idone"> 未准备 </a>
+						<h3>
+							<div class="alert alert-info center-block" role="alert"
+								id="output" style="text-align: center;">欢迎......</div>
+						</h3>
+						<a href="#" class="btn btn-default btn-sm  aaa btn-block"
+							role="button" id="idtwo">未准备 </a> <br>
+						<div class="container-fluid">
+							<div class="row">
+								<span class="col-lg-1 col-sm-1 col-xs-1 col-md-1"></span>
+								<div id="myself">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded ccol-lg-2 col-sm-2 col-xs-2 col-md-2">
+									<img src="./image/poker/54.jpg"
+										class="img-rounded col-lg-2 col-sm-2 col-xs-2 col-md-2">
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			
 		</div>
-</div>
-
-								 		
-								 			<div class="container-fluid">
-								 			<div class="row"> <div class=" col-lg-4   "></div>
-								 			<div class=" col-lg-1 col-sm-3 col-xs-3 col-md-3">
-										  <!-- <button type="button" class="btn btn-warning  disabled"  >摸牌</button> -->
-										 </div>
-								 			<div class=" col-lg-1 col-sm-3 col-xs-3 col-md-3">
-										  <button type="button" class="btn btn-default  btn-lg" id="cot">摸牌</button>
-										 </div><div class="col-sm-3 col-lg-1 col-xs-3 col-md-3">
-										  <button type="button" class="btn btn-info btn-lg" id="out" >听牌</button>
-										  </div><div class="col-sm-3 col-lg-1 col-xs-3 col-md-3">
-										  <!-- <button type="button" class="btn btn-primary disabled" id="restart">重来</button> -->
-										  </div><div class=" col-lg-5   " ></div>
-										  <!-- <div class=" col-lg-6"></div> -->
-
-										</div></div><br>
-<!-- 
-						
-<footer id="footer" >
-	<div class="container">
-		<p >作者：V</p>
-		<p><a href="" class="alert-link">源码：</a></p>
 	</div>
-</footer>
- -->
-
-<div class="container">
-<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" 
-aria-hidden="true"  >  
-    <div class="modal-dialog" role="document">  
-        <div class="modal-content">  
-           
-            <div class="modal-body">  
-               <div class="form-group">
-					<h3><p class="text-success" id="cott"></p></h3>
+	<!-- 底部功能按钮 -->
+	<div class="container-fluid">
+		<div class="row">
+			<div class=" col-lg-4"></div>
+			<div class=" col-lg-1 col-sm-3 col-xs-3 col-md-3"></div>
+			<div class=" col-lg-1 col-sm-3 col-xs-3 col-md-3">
+				<button type="button" class="btn btn-default  btn-lg" id="cot">摸牌</button>
+			</div>
+			<div class="col-sm-3 col-lg-1 col-xs-3 col-md-3">
+				<button type="button" class="btn btn-info btn-lg" id="out">听牌</button>
+			</div>
+			<div class="col-sm-3 col-lg-1 col-xs-3 col-md-3"></div>
+			<div class=" col-lg-5"></div>
+		</div>
+	</div>
+	<br>
+	<!-- 模态框显示信息 -->
+	<div class="container">
+		<div class="modal fade " id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="form-group">
+							<h3>
+								<p class="text-success" id="cott"></p>
+							</h3>
+						</div>
+					</div>
 				</div>
-            </div>  
-           
-        </div>  
-    </div>  
-</div>  
-</div>  
-
+			</div>
+		</div>
+	</div>
 </body>
-<script type="text/javascript">
-
-var flat=1;
-
-$(function(){
-			 var websocket;
-            var set = new Set();
-            var mydate = new Date();
-            var id,playerid,dealerid,gameStatus=-5;
-             websocket = new WebSocket("ws://120.78.164.110:8080/Blackjack/echo");
-            websocket.onopen = function (evnt) {
-            	// alert("aSome");
-            };
-             websocket.onmessage = function (evnt) {
-                	
-		                var data = evnt.data;
-		                var status=parseInt(data[0]);
-		                var cot=data.slice(1);
-
-		             
-		                if(status==1) {
-		                    // 庄家获得一张暗牌
-		                    // alert("你是庄家");
-		                    // $("#tt1").hide();
-		                    $("#idone").html("玩家");
-		                    $("#idone").addClass('disabled');
-		                    $("#idtwo").addClass('disabled');
-		                    $("#idtwo").html("庄家");
-		                    for(var i=0;i<5;i++) {
-		                	 			$("#you").children().eq(i).attr('src',"./image/poker/54.jpg"); 
-		                	 			$("#myself").children().eq(i).attr('src',"./image/poker/54.jpg"); 
-		                	 		}
-		                    id=1;
-		                    dealerid=1;
-		                    playerid=1;
-		                    gameStatus=0;
-		        	 		$("#output").html("等待玩家操作");
-		                    var url="./image/poker/"+cot+".jpg";
-		                    $("#myself").children().eq(0).attr('src',url); 
-		                    $("#you").children().eq(0).attr('src',"./image/poker/54.jpg"); 
-		                 
-		                }
-		                else if(status==2) {
-		                    // 玩家获得一张暗牌
-		                    // alert("你是玩家");
-		                    $("#output").html("玩家回合");
-		                    $("#idone").html("庄家");
-		                    $("#idtwo").html("玩家");
-		                   $("#idone").addClass('disabled');
-		                    $("#idtwo").addClass('disabled');
-		                    id=0;
-		                    dealerid=1;
-		                    playerid=1;
-		            //
-		                    var url="./image/poker/"+cot+".jpg";
-		                    $("#myself").children().eq(0).attr('src',url); 
-		                    $("#you").children().eq(0).attr('src',"./image/poker/54.jpg"); 
-		                    $("#but").show();
-		                    gameStatus=0;
-		                }
-		                else if(status==3) {
-		                    // 玩家获得一张牌
-		                    var url="./image/poker/"+cot+".jpg";
-		                    if(id==1){
-		                    	$("#you").children().eq(playerid).attr('src',url);
-		                    }
-		                    else {
-		                    	$("#myself").children().eq(playerid).attr('src',url); 
-		                    }
-		                    playerid++;
-		                    
-		                }
-		                else if(status==4) {
-		                    // 庄家获得一张牌
-		                    var url="./image/poker/"+cot+".jpg";
-		                    if(id==1){
-
-		                    	$("#myself").children().eq(dealerid).attr('src',url); 
-		                    }
-		                    else {
-		                    	$("#you").children().eq(dealerid).attr('src',url); 
-		                    }
-		                    dealerid++;
-		                }
-		                else if(status==5) {
-			                    // 双方通知，判断输赢
-			                    var str = data.slice(2);
-			                    if(data[1]=="1") {
-			                    	$("#output").html("你赢了");
-			                    }
-			                    else if(data[1]=="0") {
-			                    	$("#output").html("你输了");
-			                    }
-			                    else {
-			                    	$("#output").html("平局,庄家赢");
-			                    }
-			                    var url="./image/poker/"+str+".jpg";
-			                    $("#you").children().eq(0).attr('src',url); 
-			                    flat=1;
-			                     $("#idone").html("未准备");
-			                    $("#idtwo").html("未准备");
-			                    $("#idone").removeClass('btn-success');
-			                    $("#idtwo").removeClass('btn-success disabled');
-			                      $("#idone").addClass('btn-default');
-			                    $("#idtwo").addClass('btn-default');
-			                    gameStatus=3;
-			                    // // $("#you>:first").remove();
-			                    // $("#you").prepend(url);
-				                }
-		                else if(status==6) {
-
-		                	$("#idone").removeClass('btn-default');
-		                	$("#idone").html("准备");
-			       			$("#idone").addClass('btn-success');
-			       			for(var i=0;i<5;i++) {
-	                	 			$("#you").children().eq(i).attr('src',"./image/poker/54.jpg");
-	                	 		}
-		                }
-		                 else if(status==7) {
-
-		                	$("#idone").removeClass('btn-success');
-		                	$("#idone").html("未准备");
-			       			$("#idone").addClass('btn-default');
-		                }
-		                else if(status==8) {
-		                	$("#output").html("对方断开连接");
-		                		flat=1;
-			                    $("#idone").html("未准备");
-			                    $("#idtwo").html("未准备");
-			                    $("#idone").removeClass('btn-success');
-			                    $("#idtwo").removeClass('btn-success disabled');
-			                    $("#idone").addClass('btn-default');
-			                    $("#idtwo").addClass('btn-default');
-
-		                }
-		                else if(status==9){
-		                	$("#output").html("庄家回合");
-		                	gameStatus=-2;
-		                }
-		                else if(status==0){
-		                	// alert(cot);
-		                	$("#online").html(cot);
-		                }
-		                else {
-		                	if(data[0]=="a"){
-		                		$("#roomId").html(cot);
-		                	}
-		                	if(data[0]=="b"){
-		                		// alert(cott);
-		                		$("#cott").html(cot);
-		                		flat=1;
-		                		$("#myModal").modal('show');
-		                		  $("#idone").html("未准备");
-			                    $("#idtwo").html("未准备");
-			                    $("#idone").removeClass('btn-success');
-			                    $("#idtwo").removeClass('btn-success disabled');
-			                      $("#idone").addClass('btn-default');
-			                    $("#idtwo").addClass('btn-default');
-			                      for(var i=0;i<5;i++) {
-		                	 			$("#you").children().eq(i).attr('src',"./image/poker/54.jpg"); 
-		                	 			$("#myself").children().eq(i).attr('src',"./image/poker/54.jpg"); 
-		                	 		}
-		                	}
-		                	if(data[0]=="c"){
-		                		$("#output").html("点数小于17点,必须摸牌");
-		                	}
-		                }
-		            };
-		            
-		            
-				            websocket.onerror = function (evnt) {
-				            };
-				            websocket.onclose = function (evnt) {
-				            };
-				            
-				             
-				            $("#cot").bind("click", function() {
-				            	
-				            		if(gameStatus<-4) {
-				            			return ;
-				            		}
-				            		$("#output").html("等待操作...");
-				            		if(gameStatus==3) {
-				            			$("#output").html("游戏已经结束，无法摸牌");
-				            			return ;
-				            		}
-
-				            		if(gameStatus==-1) {
-				            			$("#output").html("已经听牌，不能再摸牌了");
-				            			return ;
-				            		}
-				            		if(id==1&&gameStatus!=-2) {
-				            			$("#output").html("玩家回合还没有结束，请等待");
-				            			return ;
-				            		}
-				            		if(id==1&&gameStatus==-2) {
-				            			websocket.send("5");
-				            			return ;
-				            		}
-
-				            			websocket.send("0");
-
-				            });
-				             $("#joinRoom").bind("click", function() {
-				             				// $("#roomNumber").val()
-				             				// alert($("#roomId").val());
-				             				$("#navbar-collapse").collapse('hide');
-				             				if($("#roomId").html()!="未进入房间"){
-				             					$("#cott").html("你已经加入房间，不能加入其他房间");
-		                						$("#myModal").modal('show');
-				             					// alert("你已经加入房间，不能加入其他房间");
-				             					return ;
-				             				}
-				            		 		websocket.send("8"+$("#roomNumber").val());
-				            		 		
-				            		 });
-				            		  $("#createRoom").bind("click", function() {
-				            		  	$("#navbar-collapse").collapse('hide');
-				            		  	if($("#roomId").html()!="未进入房间"){
-				            		  		$("#cott").html("你已经加入房间，不能创建其他房间");
-		                						$("#myModal").modal('show');
-				             					return ;
-				             				}
-				            		 		websocket.send("7");
-
-				            		 });
-				             $("#out").bind("click", function() {
-				             	if(gameStatus<-4) {
-				            			return ;
-				            		}
-				            		$("#output").html("等待操作...");
-				             		if(gameStatus==3) {
-				            			$("#output").html("游戏已经结束，无法听牌");
-				            			return ;
-				            		}
-				             		if(gameStatus==-1) {
-				             			$("#output").html("你已经听牌了,不用再次点击听牌");
-				             			return ;
-				             		}
-				             		if(id==1&&gameStatus!=-2) {
-				            			$("#output").html("玩家回合还没有结束，请等待");
-				            			return ;
-				            		}
-				            		if(id==1&&gameStatus==-2) {
-				            			// 庄家摸牌
-				            			websocket.send("6");
-				            			return ;
-				            		}
-				             		if(id==0) {
-				             			gameStatus =-1;
-				             		}
-
-				                    websocket.send("1");
-				                    $("#output").html("等待庄家操作");
-
-
-
-				            });
-								$("#idtwo").click(function(){
-									if($("#roomId").html()=="未进入房间"){
-										$("#cott").html("请先进入房间");
-                						$("#myModal").modal('show');
-                						// alert("aSome");
-                						return ;
-									}
-									if(flat==1) {
-										for(var i=0;i<5;i++) {
-	                	 			$("#myself").children().eq(i).attr('src',"./image/poker/54.jpg");
-	                	 			}
-										$("#idtwo").html("准备");
-										$("#output").html("游戏准备");
-										websocket.send("3");
-						       			$("#idtwo").removeClass('btn-default');
-						       			$("#idtwo").addClass('btn-success');
-						       			flat=0;
-									}
-									else {
-										websocket.send("4");
-										$("#idtwo").html("未准备");
-										$("#output").html("游戏未准备");
-						       			$("#idtwo").removeClass('btn-success');
-						       			$("#idtwo").addClass('btn-default');
-						       			flat=1;
-						       		}
-									});
-
-            });
-
-
-</script>
 </html>
