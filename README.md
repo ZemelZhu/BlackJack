@@ -7,7 +7,7 @@
  * 具体功能模块的实现在[博客](http://blog.csdn.net/qq_35442958/article/details/79188998 "CSDN博客")中有说明
  * 技术栈：spring+springMVC+websocket+maven+bootstrp
 ## 运行
- * 可以把target下的Chatrum.war放在tomcat下运行，然后访问[http://127.0.0.1:8080/Blackjack/blackjack/blackJack.html](http://127.0.0.1:8080/Chatrum/rum/chat.html)就可以
+ * 可以把target下的Blackjack.war放在tomcat下运行，然后访问[http://127.0.0.1:8080/Blackjack/blackjack/blackJack.html](http://127.0.0.1:8080/Chatrum/rum/chat.html)就可以
  * 也可以IDE导入项目，更新maven依赖，然后用maven命令tomcat7:run运行，然后访问[http://127.0.0.1:8080/blackjack/blackJack.html](http://127.0.0.1:8080/rum/chat.html)就可以
  * 也可以访问[http://120.78.164.110:8080/Blackjack/blackjack/blackJack.html](http://120.78.164.110:8080/Blackjack/blackjack/blackJack.html)查看
  ## 预览
